@@ -22,13 +22,13 @@ namespace worker
 
             try
             {
-                Log.Information("Servis başlatılıyor.");
+                Log.Information("Uygulama başlatılıyor.");
                 CreateHostBuilder(args).Build().Run();
                 return;
             }
             catch (Exception ex)
             {
-                Log.Fatal(ex, "Servis başlatılamadı.");
+                Log.Fatal(ex, "Uygulama başlatılamadı.");
                 return;
             }
             finally
@@ -40,6 +40,7 @@ namespace worker
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
+                .UseWindowsService()
                 .ConfigureServices((hostContext, services) =>
                 {
                     services.AddHostedService<Worker>();

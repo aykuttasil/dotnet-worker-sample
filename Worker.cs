@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using RestSharp;
 
 namespace worker
 {
@@ -20,6 +21,7 @@ namespace worker
 
         public override Task StartAsync(CancellationToken cancellationToken)
         {
+            _logger.LogInformation("Service is starting.");
             return base.StartAsync(cancellationToken);
         }
 
@@ -27,16 +29,26 @@ namespace worker
         {
             while (!stoppingToken.IsCancellationRequested)
             {
-                _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
-                await Task.Delay(1000, stoppingToken);
+                var client = new RestClient();
+                var url = "https://dog.ceo/api/breeds/image/random";
+                var request = new RestRequest(url);
+                var resp = await client.ExecuteAsync<string>(request);
+                if (resp.IsSuccessful)
+                {
+                    _logger.LogInformation("Successful");
+                }
+                else
+                {
+                    _logger.LogError("Hata: " + resp.ErrorMessage);
+                }
+
+                await Task.Delay(1 * 2000, stoppingToken);
             }
         }
 
         public override async Task StopAsync(CancellationToken stoppingToken)
         {
-            _logger.LogInformation(
-                "Consume Scoped Service Hosted Service is stopping.");
-
+            _logger.LogInformation("Service is stopping.");
             await base.StopAsync(stoppingToken);
         }
 

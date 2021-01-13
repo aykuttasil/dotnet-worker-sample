@@ -22,3 +22,4 @@ sc.exe start YourWorkerClassName
 
 - <https://dev.to/fernandosonego/worker-services-with-asp-net-core-18c2>
 - <https://medium.com/software-development-turkey/net-core-worker-services-3434a1bf550a>
+- <https://docs.microsoft.com/en-us/aspnet/core/fundamentals/host/hosted-services?view=aspnetcore-5.0&tabs=netcore-cli>
